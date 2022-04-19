@@ -99,7 +99,17 @@ def movement_left():
                     if x0==100: square[i][j], square[i][j-1]=None, square[i][j]
                     if x0==200: square[i][j], square[i][j-1]=None, square[i][j]
     canvas.after(1, movement_left) if move==True else bind()
-                
+
+#addition
+def addition(c1, c2):
+    """Retourne l'addition des deux configs c1 et c2"""
+    c_res = [[0 for i in range(N+2)] for j in range(N+2)]
+    for i in range(1, N+1):
+        for j in range(1, N+1):
+            c_res[i][j] = c1[i][j] + c2[i][j]
+    return c_res
+
+
 def movement(direction):
     unbind()
     if direction == "up": movement_up()
