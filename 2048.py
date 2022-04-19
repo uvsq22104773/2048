@@ -16,15 +16,14 @@ square = [  [None, None, None, None],
 def matrice_game():
     global square
     ligne, colonne = random.randint(0,3), random.randint(0,3)
+    while square[ligne][colonne] != None:
+        ligne, colonne = random.randint(0,3), random.randint(0,3)
     if square[ligne][colonne] == None: square[ligne][colonne] = create_square(colonne*100, ligne*100)
-    else : 
-        for i in range(4): 
-            if None in square[i]: matrice_game
 
 def create_square(x, y):
     square = canvas.create_rectangle((x, y), (100+x, 100+y), fill="red")
     return square
-        
+
 def movement_up():
     global square
     move=False
