@@ -7,23 +7,23 @@ matrice = [ [0, 0, 0, 0],
             [0, 0, 0, 0], 
             [0, 0, 0, 0]]
 
-#grille
-N = 4
-
 square = [  [None, None, None, None],
             [None, None, None, None],
             [None, None, None, None],
             [None, None, None, None]]
 
+place_square=True
+
 # Fonctions
 def matrice_game():
-    global square
-    ligne, colonne = random.randint(0,3), random.randint(0,3)
-    while square[ligne][colonne] != None:
+    global square, place_square
+    if place_square==True:
         ligne, colonne = random.randint(0,3), random.randint(0,3)
-    if square[ligne][colonne] == None: 
-        square[ligne][colonne] = create_square(colonne*100, ligne*100)
-
+        while square[ligne][colonne] != None:
+            ligne, colonne = random.randint(0,3), random.randint(0,3)
+        if square[ligne][colonne] ==None :
+            square[ligne][colonne] = create_square(colonne*100, ligne*100)
+        place_square=False
 
 def create_square(x, y):
     square = canvas.create_rectangle((x, y), (100+x, 100+y), fill="red")
@@ -31,14 +31,16 @@ def create_square(x, y):
     return square
 
 def movement_up():
-    global square
+    global square, place_square
     move=False
     for i in range(4):
         for j in range(4):
             d=0
+            if  i!=0 and square[i][j]!=None and square[i-1][j]==None:
+                place_square=True
             if square[i][j] != None:
                 x0, y0, x1, y1 = canvas.coords(square[i][j])
-                if i>0 and square[i-1][j]!=None: 
+                if i>0 and square[i-1][j]!=None:
                     a, b, c, d = canvas.coords(square[i-1][j])
                 if y0>d:
                     move=True
@@ -47,14 +49,16 @@ def movement_up():
                     if y0==0: square[i][j], square[i-1][j]=None, square[i][j]
                     if y0==100: square[i][j], square[i-1][j]=None, square[i][j]
                     if y0==200: square[i][j], square[i-1][j]=None, square[i][j]
-    canvas.after(1, movement_up) if move==True else bind() 
+    canvas.after(1, movement_up) if move==True else bind()
 
 def movement_down():
-    global square
+    global square, place_square
     move=False
     for i in range(3, -1, -1):
         for j in range(4):
             b=400
+            if i!=3 and square[i][j]!=None and square[i+1][j]==None:
+                place_square=True
             if square[i][j] != None:
                 x0, y0, x1, y1 = canvas.coords(square[i][j])
                 if i<3 and square[i+1][j]!=None:
@@ -69,11 +73,13 @@ def movement_down():
     canvas.after(1, movement_down) if move==True else bind()
                 
 def movement_right():
-    global square
+    global square, place_square
     move=False
     for i in range(4):
         for j in range(3, -1, -1):
             a=400
+            if  j!=3 and square[i][j]!=None and square[i][j+1]==None:
+                place_square=True
             if square[i][j] != None: 
                 x0, y0, x1, y1 = canvas.coords(square[i][j])
                 if j<3 and square[i][j+1]!=None:
@@ -88,11 +94,13 @@ def movement_right():
     canvas.after(1, movement_right) if move==True else bind()
                 
 def movement_left():
-    global square
+    global square, place_square
     move=False
     for i in range(4):
         for j in range(4):
             c=0
+            if  j!=0 and square[i][j]!=None and square[i][j-1]==None:
+                place_square=True
             if square[i][j] != None:
                 x0, y0, x1, y1 = canvas.coords(square[i][j])
                 if j>0 and square[i][j-1]!=None:
@@ -109,6 +117,7 @@ def movement_left():
 #addition
 def addition(c1, c2):
     """Retourne l'addition des deux configs c1 et c2"""
+    N=4
     c_res = [[0 for i in range(N+2)] for j in range(N+2)]
     for i in range(1, N+1):
         for j in range(1, N+1):
