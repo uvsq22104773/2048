@@ -23,11 +23,12 @@ def matrice_game():
         ligne, colonne = random.randint(0,3), random.randint(0,3)
     if square[ligne][colonne] == None: 
         square[ligne][colonne] = create_square(colonne*100, ligne*100)
+    matrice[random(1,4)][random(1,4)] += 2
 
 
 def create_square(x, y):
     square = canvas.create_rectangle((x, y), (100+x, 100+y), fill="red")
-    chiffre = canvas.create_text((x+50), (50+y), fill="black", font = ("helvetica", "40"), text = "2")
+    chiffre = canvas.create_text((x+50), (50+y), fill="black", font = ("helvetica", "40"), text = matrice[1][1])
     return square
 
 def movement_up():
