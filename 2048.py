@@ -19,18 +19,14 @@ def matrice_game():
     global square, place_square
     if place_square==True:
         ligne, colonne = random.randint(0,3), random.randint(0,3)
-<<<<<<< HEAD
     if square[ligne][colonne] == None: 
         square[ligne][colonne] = create_square(colonne*100, ligne*100)
     matrice[random(1,4)][random(1,4)] += 2
-
-=======
         while square[ligne][colonne] != None:
             ligne, colonne = random.randint(0,3), random.randint(0,3)
         if square[ligne][colonne] ==None :
             square[ligne][colonne] = create_square(colonne*100, ligne*100)
         place_square=False
->>>>>>> 1c5cbe4df4b815ec7f45fed02d9b532c87d46a13
 
 def create_square(x, y):
     square = canvas.create_rectangle((x, y), (100+x, 100+y), fill="red")
