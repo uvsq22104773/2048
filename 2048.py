@@ -218,5 +218,4 @@ canvas.grid()
 
 # ...
 bind()
-
 root.mainloop()
