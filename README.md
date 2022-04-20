@@ -5,7 +5,9 @@ Project Details:
 
 Names:
 
-- Matveev Erik
-- ... Wael
-- Joly Theo
-- ... Nils 
+- MATVEEV Erik
+- DJEBROUNI Ouail
+- JOLY Théo
+- LEDIEN Nils
+
+Groupe: BI1
