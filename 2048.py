@@ -20,12 +20,13 @@ numbers = [ [None, None, None, None],
 
 images=[]
 
-game_over=[None, None]
+game_over=[None, None, None, None]
 
 place_square=True
+status="exit"
 # Fonctions
 def play(event):
-    global place_square, matrice, square, numbers, game_over
+    global place_square, matrice, square, numbers, game_over, status
     for i in range(4):
         for j in range(4):
             if square[i][j]!=None:
@@ -35,14 +36,30 @@ def play(event):
             square[i][j], numbers[i][j], matrice[i][j]=None, None, 0
     canvas.delete(game_over[0])
     canvas.delete(game_over[1])
-    game_over[0], game_over[1]=None, None
+    canvas.delete(game_over[2])
+    canvas.delete(game_over[3])
+    game_over=[None, None, None, None]
+    place_square=True
     matrice_game()
     place_square=True
     bind()
+    status="play"
+
+def exit(event):
+    global game_over, matrice, status
+    place_square, score=False, 0
+    unbind()
+    opacity_rectangle(0, 0, 400, 400, fill="black", alpha=0.7)
+    game_over[2]=canvas.create_text((200, 200), text="Game Over", font=("helvetica", "40"), fill="white")
+    for i in range(4):
+        for j in range(4):
+            score+=matrice[i][j]
+    game_over[3]=canvas.create_text((200,230), text=str(score), font=("helvetica", "15"), fill="white")
+    status="exit"
 
 def detect_lose():
     global place_square, game_over
-    lose=True
+    lose, score=True, 0
     for i in range(4):
         for j in range(4):
             if matrice[i][j]==0:
@@ -54,8 +71,12 @@ def detect_lose():
     if lose==True:
         place_square=False
         unbind()
-        game_over[0]=opacity_rectangle(0, 0, 400, 400, fill="black", alpha=0.7)
-        game_over[1]=canvas.create_text((200, 200), text="Game Over", font=("helvetica", "40"), fill="white")
+        opacity_rectangle(0, 0, 400, 400, fill="black", alpha=0.7)
+        game_over[2]=canvas.create_text((200, 200), text="Game Over", font=("helvetica", "40"), fill="white")
+        for i in range(4):
+            for j in range(4):
+                score+=matrice[i][j]
+        game_over[3]=canvas.create_text((200,230), text=str(score), font=("helvetica", "15"), fill="white")
 
 def matrice_game():
     global square, numbers, place_square
@@ -258,19 +279,25 @@ def bind():
 root = tk.Tk()
 root.title("2048")
 canvas = tk.Canvas(root, width=398, height=435, bg="black")
-canvas.create_rectangle(0, 400, 410, 440, fill="white")
-canvas.create_text((200, 418), text="Play", font=("helvetica", "20"), fill="black")
+canvas.create_rectangle(0, 400, 410, 440, fill="grey")
+canvas.create_line(100, 400, 100, 440, fill="darkgrey")
+canvas.create_line(200, 400, 200, 440, fill="darkgrey")
+canvas.create_line(300, 400, 300, 440, fill="darkgrey")
+canvas.create_text((250, 418), text="Play", font=("helvetica", "20"), fill="white")
+canvas.create_text((350, 418), text="Exit", font=("helvetica", "20"), fill="white")
 canvas.grid()
 
-# Détection de la position de la souris inspiré de la source https://codertw.com/程式語言/114662/
+# Détection de la position de la souris inspiré de la source: https://codertw.com/程式語言/114662/
 
 def motion(event):
+    global status
     x, y=event.x, event.y
-    if x>175 and x<225 and y>400 and y<435:
-        print("yes")
+    if x>200 and x<300 and y>400 and y<436 and status=="exit":
         root.bind('<Button-1>', play)
+    elif x>300 and x<400 and y>400 and y<436 and status=="play":
+        root.bind('<Button-1>', exit)
     else: root.unbind('<Button-1>')
-    print("Mouse position: ", (event.x, event.y))
+    #print("Mouse position: (%s %s)" % (event.x, event.y))
 
 canvas.bind('<Motion>', motion)
 
@@ -279,13 +306,14 @@ canvas.bind('<Motion>', motion)
 
 # Sert uniquement pour l'esthétique, source: https://www.tutorialspoint.com/how-to-make-a-tkinter-canvas-rectangle-transparent
 def opacity_rectangle(x, y, a, b, **options):
-   if 'alpha' in options:
-      alpha = int(options.pop('alpha') * 255)
-      fill = options.pop('fill')
-      fill = root.winfo_rgb(fill) + (alpha,)
-      image = Image.new('RGBA', (a-x, b-y), fill)
-      images.append(ImageTk.PhotoImage(image))
-      canvas.create_image(x, y, image=images[-1], anchor='nw')
-      canvas.create_rectangle(x, y, a, b, **options)
+    global game_over
+    if 'alpha' in options:
+        alpha = int(options.pop('alpha') * 255)
+        fill = options.pop('fill')
+        fill = root.winfo_rgb(fill) + (alpha,)
+        image = Image.new('RGBA', (a-x, b-y), fill)
+        images.append(ImageTk.PhotoImage(image))
+        game_over[0]=canvas.create_image(x, y, image=images[-1], anchor='nw')
+        game_over[1]=canvas.create_rectangle(x, y, a, b, **options)
 
 root.mainloop()
