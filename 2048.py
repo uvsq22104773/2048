@@ -20,10 +20,28 @@ numbers = [ [None, None, None, None],
 
 images=[]
 
+game_over=[None, None]
+
 place_square=True
 # Fonctions
+def play(event):
+    global place_square, matrice, square, numbers, game_over
+    for i in range(4):
+        for j in range(4):
+            if square[i][j]!=None:
+                canvas.delete(square[i][j])
+            if numbers[i][j]!=None:
+                canvas.delete(numbers[i][j])
+            square[i][j], numbers[i][j], matrice[i][j]=None, None, 0
+    canvas.delete(game_over[0])
+    canvas.delete(game_over[1])
+    game_over[0], game_over[1]=None, None
+    matrice_game()
+    place_square=True
+    bind()
+
 def detect_lose():
-    global place_square
+    global place_square, game_over
     lose=True
     for i in range(4):
         for j in range(4):
@@ -36,8 +54,8 @@ def detect_lose():
     if lose==True:
         place_square=False
         unbind()
-        opacity_rectangle(0, 0, 400, 400, fill="black", alpha=0.7)
-        canvas.create_text((200, 200), text="Game Over", font=("helvetica", "50"), fill="white")
+        game_over[0]=opacity_rectangle(0, 0, 400, 400, fill="black", alpha=0.7)
+        game_over[1]=canvas.create_text((200, 200), text="Game Over", font=("helvetica", "40"), fill="white")
 
 def matrice_game():
     global square, numbers, place_square
@@ -101,9 +119,7 @@ def movement_up():
                         matrice[i][j]=0
                         place_square=True
     if move==True: canvas.after(1, movement_up)
-    else: 
-        bind()
-        detect_lose()
+    else: bind(), detect_lose()
 
 def movement_down():
     global square, numbers, matrice, place_square
@@ -141,9 +157,7 @@ def movement_down():
                         matrice[i][j]=0
                         place_square=True
     if move==True: canvas.after(1, movement_down)
-    else: 
-        bind()
-        detect_lose()
+    else: bind(), detect_lose()
                 
 def movement_right():
     global square, numbers, matrice, place_square
@@ -181,9 +195,7 @@ def movement_right():
                         matrice[i][j]=0
                         place_square=True
     if move==True: canvas.after(1, movement_right)
-    else: 
-        bind()
-        detect_lose()
+    else: bind(), detect_lose()
                 
 def movement_left():
     global square, numbers, matrice, place_square
@@ -221,9 +233,7 @@ def movement_left():
                         matrice[i][j]=0
                         place_square=True
     if move==True: canvas.after(1, movement_left)
-    else: 
-        bind()
-        detect_lose()
+    else: bind(), detect_lose()
                 
 def movement(direction):
     unbind()
@@ -243,16 +253,32 @@ def bind():
     root.bind("<Right>", lambda e: movement("right"))
     root.bind("<Left>", lambda e: movement("left"))
     matrice_game()
+
 # Création des widgets
 root = tk.Tk()
-canvas = tk.Canvas(root, width=400, height=400, bg="black")
+root.title("2048")
+canvas = tk.Canvas(root, width=398, height=435, bg="black")
+canvas.create_rectangle(0, 400, 410, 440, fill="white")
+canvas.create_text((200, 418), text="Play", font=("helvetica", "20"), fill="black")
 canvas.grid()
 
+# Détection de la position de la souris inspiré de la source https://codertw.com/程式語言/114662/
+
+def motion(event):
+    x, y=event.x, event.y
+    if x>175 and x<225 and y>400 and y<435:
+        print("yes")
+        root.bind('<Button-1>', play)
+    else: root.unbind('<Button-1>')
+    print("Mouse position: ", (event.x, event.y))
+
+canvas.bind('<Motion>', motion)
+
 # ...
-bind()
+#bind()
 
 # Sert uniquement pour l'esthétique, source: https://www.tutorialspoint.com/how-to-make-a-tkinter-canvas-rectangle-transparent
-def opacity_rectangle(x,y,a,b,**options):
+def opacity_rectangle(x, y, a, b, **options):
    if 'alpha' in options:
       alpha = int(options.pop('alpha') * 255)
       fill = options.pop('fill')
