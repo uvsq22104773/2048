@@ -120,7 +120,10 @@ def detect_lose():
             for j in range(4):
                 score+=matrice[i][j]
         game_over.append(canvas.create_text((200,230), text=str(score), font=("helvetica", "15"), fill="white"))
+        canvas.itemconfigure(rectangle_exit, fill="#E0e0e0", outline="#E0e0e0")
         canvas.itemconfigure(button_exit, fill="#C6c5c5")
+        canvas.itemconfigure(rectangle_save, fill="#E0e0e0", outline="#E0e0e0")
+        canvas.itemconfigure(button_save, fill="#C6c5c5")
         status=""
 
 def matrice_game():
