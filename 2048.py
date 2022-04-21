@@ -70,7 +70,6 @@ def rematch():
     for i in range(len(game_over)):
         canvas.delete(game_over[i])
     game_over=[]
-    text_over=[None, None]
 
 def play(event):
     global place_square, matrice, square, numbers, game_over, status
