@@ -341,8 +341,7 @@ canvas.create_line(200, 400, 200, 440, fill="darkgrey")
 canvas.create_line(300, 400, 300, 440, fill="darkgrey")
 button_play=canvas.create_text((250, 418), text="Play", font=("helvetica", "20"), fill="black")
 button_exit=canvas.create_text((350, 418), text="Exit", font=("helvetica", "20"), fill="grey")
-# création de la grille separée en 4
-button_grid_4 =canvas.create_text((50, 418), text = "grille 4", font=("helvetica", "20"), fill = "blue")
+button_grid_4 =canvas.create_text((50, 418), text = "grille 4", font=("helvetica", "20"), fill = "blue")# création de la grille separée en 4
 canvas.grid()
 
 
