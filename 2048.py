@@ -45,18 +45,65 @@ def play(event):
     bind()
     status="play"
 
+import tkinter as tk
+import random
+from PIL import Image, ImageTk
+
+# Constantes
+matrice = [ [0, 0, 0, 0], 
+            [0, 0, 0, 0], 
+            [0, 0, 0, 0], 
+            [0, 0, 0, 0]]
+
+square = [  [None, None, None, None],
+            [None, None, None, None],
+            [None, None, None, None],
+            [None, None, None, None]]
+        
+numbers = [ [None, None, None, None],
+            [None, None, None, None],
+            [None, None, None, None],
+            [None, None, None, None]]
+
+images=[]
+
+game_over=[]
+
+place_square=True
+status=""
+# Fonctions
+def play(event):
+    global place_square, matrice, square, numbers, game_over, status
+    for i in range(4):
+        for j in range(4):
+            if square[i][j]!=None:
+                canvas.delete(square[i][j])
+            if numbers[i][j]!=None:
+                canvas.delete(numbers[i][j])
+            square[i][j], numbers[i][j], matrice[i][j]=None, None, 0
+    for i in range(len(game_over)):
+        canvas.delete(game_over[i])
+    game_over=[]
+    text_over=[None, None]
+    place_square=True
+    matrice_game()
+    place_square=True
+    bind()
+    canvas.itemconfigure(button_exit, fill="black")
+    status="play"
+
 def exit(event):
     global game_over, matrice, status
     place_square, score=False, 0
     unbind()
     opacity_rectangle(0, 0, 400, 400, fill="black", alpha=0.7)
-    game_over[2]=canvas.create_text((200, 200), text="Game Over", font=("helvetica", "40"), fill="white")
+    game_over.append(canvas.create_text((200, 200), text="Game Over", font=("helvetica", "40"), fill="white"))
     for i in range(4):
         for j in range(4):
             score+=matrice[i][j]
-    game_over[3]=canvas.create_text((200,230), text=str(score), font=("helvetica", "15"), fill="white")
-    status="exit"
-
+    game_over.append(canvas.create_text((200,230), text=str(score), font=("helvetica", "15"), fill="white"))
+    canvas.itemconfigure(button_exit, fill="grey")
+    
 def detect_lose():
     global place_square, game_over
     lose, score=True, 0
@@ -72,11 +119,11 @@ def detect_lose():
         place_square=False
         unbind()
         opacity_rectangle(0, 0, 400, 400, fill="black", alpha=0.7)
-        game_over[2]=canvas.create_text((200, 200), text="Game Over", font=("helvetica", "40"), fill="white")
+        game_over.append(canvas.create_text((200, 200), text="Game Over", font=("helvetica", "40"), fill="white"))
         for i in range(4):
             for j in range(4):
                 score+=matrice[i][j]
-        game_over[3]=canvas.create_text((200,230), text=str(score), font=("helvetica", "15"), fill="white")
+        game_over.append(canvas.create_text((200,230), text=str(score), font=("helvetica", "15"), fill="white"))
 
 def matrice_game():
     global square, numbers, place_square
@@ -279,12 +326,12 @@ def bind():
 root = tk.Tk()
 root.title("2048")
 canvas = tk.Canvas(root, width=398, height=435, bg="black")
-canvas.create_rectangle(0, 400, 410, 440, fill="grey")
+canvas.create_rectangle(0, 400, 410, 440, fill="white")
 canvas.create_line(100, 400, 100, 440, fill="darkgrey")
 canvas.create_line(200, 400, 200, 440, fill="darkgrey")
 canvas.create_line(300, 400, 300, 440, fill="darkgrey")
-canvas.create_text((250, 418), text="Play", font=("helvetica", "20"), fill="white")
-canvas.create_text((350, 418), text="Exit", font=("helvetica", "20"), fill="white")
+button_play=canvas.create_text((250, 418), text="Play", font=("helvetica", "20"), fill="black")
+button_exit=canvas.create_text((350, 418), text="Exit", font=("helvetica", "20"), fill="grey")
 canvas.grid()
 
 # Détection de la position de la souris inspiré de la source: https://codertw.com/程式語言/114662/
@@ -292,7 +339,7 @@ canvas.grid()
 def motion(event):
     global status
     x, y=event.x, event.y
-    if x>200 and x<300 and y>400 and y<436 and status=="exit":
+    if x>200 and x<300 and y>400 and y<436:
         root.bind('<Button-1>', play)
     elif x>300 and x<400 and y>400 and y<436 and status=="play":
         root.bind('<Button-1>', exit)
@@ -313,7 +360,7 @@ def opacity_rectangle(x, y, a, b, **options):
         fill = root.winfo_rgb(fill) + (alpha,)
         image = Image.new('RGBA', (a-x, b-y), fill)
         images.append(ImageTk.PhotoImage(image))
-        game_over[0]=canvas.create_image(x, y, image=images[-1], anchor='nw')
-        game_over[1]=canvas.create_rectangle(x, y, a, b, **options)
+        game_over.append(canvas.create_image(x, y, image=images[-1], anchor='nw'))
+        game_over.append(canvas.create_rectangle(x, y, a, b, **options))
 
 root.mainloop()
