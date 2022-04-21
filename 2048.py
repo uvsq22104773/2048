@@ -1,5 +1,6 @@
 import tkinter as tk
 import random
+from PIL import Image, ImageTk
 
 # Constantes
 matrice = [ [0, 0, 0, 0], 
@@ -17,8 +18,27 @@ numbers = [ [None, None, None, None],
             [None, None, None, None],
             [None, None, None, None]]
 
+images=[]
+
 place_square=True
 # Fonctions
+def detect_lose():
+    global place_square
+    lose=True
+    for i in range(4):
+        for j in range(4):
+            if matrice[i][j]==0:
+                lose=False
+            if i!=3 and matrice[i][j]==matrice[i+1][j]:
+                lose=False
+            if  j!=3 and matrice[i][j]==matrice[i][j+1]:
+                lose=False
+    if lose==True:
+        place_square=False
+        unbind()
+        opacity_rectangle(0, 0, 400, 400, fill="black", alpha=0.7)
+        canvas.create_text((200, 200), text="Game Over", font=("helvetica", "50"), fill="white")
+
 def matrice_game():
     global square, numbers, place_square
     if place_square==True:
@@ -80,7 +100,10 @@ def movement_up():
                         matrice[i-1][j]*=2
                         matrice[i][j]=0
                         place_square=True
-    canvas.after(1, movement_up) if move==True else bind()
+    if move==True: canvas.after(1, movement_up)
+    else: 
+        bind()
+        detect_lose()
 
 def movement_down():
     global square, numbers, matrice, place_square
@@ -117,7 +140,10 @@ def movement_down():
                         matrice[i+1][j]*=2
                         matrice[i][j]=0
                         place_square=True
-    canvas.after(1, movement_down) if move==True else bind()
+    if move==True: canvas.after(1, movement_down)
+    else: 
+        bind()
+        detect_lose()
                 
 def movement_right():
     global square, numbers, matrice, place_square
@@ -154,7 +180,10 @@ def movement_right():
                         matrice[i][j+1]*=2
                         matrice[i][j]=0
                         place_square=True
-    canvas.after(1, movement_right) if move==True else bind()
+    if move==True: canvas.after(1, movement_right)
+    else: 
+        bind()
+        detect_lose()
                 
 def movement_left():
     global square, numbers, matrice, place_square
@@ -191,7 +220,10 @@ def movement_left():
                         matrice[i][j-1]*=2
                         matrice[i][j]=0
                         place_square=True
-    canvas.after(1, movement_left) if move==True else bind()
+    if move==True: canvas.after(1, movement_left)
+    else: 
+        bind()
+        detect_lose()
                 
 def movement(direction):
     unbind()
@@ -218,4 +250,16 @@ canvas.grid()
 
 # ...
 bind()
+
+# Sert uniquement pour l'esthétique, source: https://www.tutorialspoint.com/how-to-make-a-tkinter-canvas-rectangle-transparent
+def opacity_rectangle(x,y,a,b,**options):
+   if 'alpha' in options:
+      alpha = int(options.pop('alpha') * 255)
+      fill = options.pop('fill')
+      fill = root.winfo_rgb(fill) + (alpha,)
+      image = Image.new('RGBA', (a-x, b-y), fill)
+      images.append(ImageTk.PhotoImage(image))
+      canvas.create_image(x, y, image=images[-1], anchor='nw')
+      canvas.create_rectangle(x, y, a, b, **options)
+
 root.mainloop()
