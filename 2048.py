@@ -441,7 +441,7 @@ def motion(event):
     elif x>300 and x<400 and y>400 and y<436 and status=="play":
         root.bind('<Button-1>', exit)
     else: root.unbind('<Button-1>')
-    #print("Mouse position: (%s %s)" % (event.x, event.y))
+    #print("Mouse position:", (event.x, event.y))
 
 canvas.bind('<Motion>', motion)
 
