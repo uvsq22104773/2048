@@ -151,7 +151,7 @@ def create_square(x, y, i, j):
         
 def create_number(x, y, ligne, colonne):
     global matrice
-    number = canvas.create_text((x+52, y+52), text=matrice[ligne][colonne], font=("helvetica", "35"), fill="black")
+    number = canvas.create_text((x+52, y+52), text=matrice[ligne][colonne], font=("helvetica", "30"), fill="black")
     return number
 
 def movement_up():
