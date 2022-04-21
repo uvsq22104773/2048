@@ -1,3 +1,4 @@
+from sqlite3 import Row
 import tkinter as tk
 import random
 from PIL import Image, ImageTk
@@ -322,6 +323,14 @@ def bind():
     root.bind("<Left>", lambda e: movement("left"))
     matrice_game()
 
+
+def grille_en_4():
+    LARGEUR = 600
+    HAUTEUR = 400
+    mur_G = canvas.create_line(1,0,1,HAUTEUR,fill='white')
+    mur_D = canvas.create_line(150,0,150,HAUTEUR,fill='white')
+    pass
+
 # Création des widgets
 root = tk.Tk()
 root.title("2048")
@@ -332,7 +341,11 @@ canvas.create_line(200, 400, 200, 440, fill="darkgrey")
 canvas.create_line(300, 400, 300, 440, fill="darkgrey")
 button_play=canvas.create_text((250, 418), text="Play", font=("helvetica", "20"), fill="black")
 button_exit=canvas.create_text((350, 418), text="Exit", font=("helvetica", "20"), fill="grey")
+# création de la grille separée en 4
+button_grid_4 =canvas.create_text((50, 418), text = "grille 4", font=("helvetica", "20"), fill = "blue")
 canvas.grid()
+
+
 
 # Détection de la position de la souris inspiré de la source: https://codertw.com/程式語言/114662/
 
