@@ -1,4 +1,3 @@
-from sqlite3 import Row
 import tkinter as tk
 import random
 from PIL import Image, ImageTk
