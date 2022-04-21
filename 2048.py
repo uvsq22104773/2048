@@ -25,12 +25,40 @@ game_over=[]
 
 place_square=True
 status=""
-
 mix=[False, False, False, False]
 
 color = {2 : "#b0e3f6", 4 : "#b1cae9", 8 : "#c0bbdc", 16 : "#cfb1d5", 32 : "#e1b0d0", 64 : "#f6accd", 128 : "#fac0b5", 256 : "#fdd6ab", 512 : "#fce8b3", 1024 : "#ebefb2", 2048 : "#d7e8b2", 4096 : "#d9e8b1", 8192 : "#cee7c7", 16384 : "#c7e6d7", 32768 : "#a7d8bb", 65536 : "#8dcca6", 131072 : "#52d085"}
 # Fonctions
-def play(event):
+def save(event):
+    file=open("save.txt", "w")
+    for i in range(len(matrice)):
+        for j in range(len(matrice[i])):  
+            file.write(str(matrice[i][j]) + " ")
+        file.write("\n")
+
+def load(event):
+    global matrice, square, numbers, status
+    rematch()
+    i=0
+    file=open("save.txt", "r")
+    for ligne in file:
+        liste=ligne.split()
+        for j in range(len(liste)):
+            matrice[i][j]=int(liste[j])
+        i+=1
+    for i in range(4):
+        for j in range(4):
+            if matrice[i][j]!=0:
+                square[i][j] = create_square(j*98, i*98, i, j)
+                numbers[i][j] = create_number(j*98, i*98, i, j)
+    bind(False)
+    canvas.itemconfigure(rectangle_exit, fill="#B5b5b5", outline="#B5b5b5")
+    canvas.itemconfigure(button_exit, fill="black")
+    canvas.itemconfigure(rectangle_save, fill="#B5b5b5", outline="#B5b5b5")
+    canvas.itemconfigure(button_save, fill="black")
+    status="play"
+
+def rematch():
     global place_square, matrice, square, numbers, game_over, status
     for i in range(4):
         for j in range(4):
@@ -43,12 +71,18 @@ def play(event):
         canvas.delete(game_over[i])
     game_over=[]
     text_over=[None, None]
+
+def play(event):
+    global place_square, matrice, square, numbers, game_over, status
+    rematch()
     place_square=True
     matrice_game()
     place_square=True
-    bind()
+    bind(True)
     canvas.itemconfigure(rectangle_exit, fill="#B5b5b5", outline="#B5b5b5")
     canvas.itemconfigure(button_exit, fill="black")
+    canvas.itemconfigure(rectangle_save, fill="#B5b5b5", outline="#B5b5b5")
+    canvas.itemconfigure(button_save, fill="black")
     status="play"
 
 def exit(event):
@@ -63,6 +97,8 @@ def exit(event):
     game_over.append(canvas.create_text((200,230), text=str(score), font=("helvetica", "15"), fill="white"))
     canvas.itemconfigure(rectangle_exit, fill="#E0e0e0", outline="#E0e0e0")
     canvas.itemconfigure(button_exit, fill="#C6c5c5")
+    canvas.itemconfigure(rectangle_save, fill="#E0e0e0", outline="#E0e0e0")
+    canvas.itemconfigure(button_save, fill="#C6c5c5")
     status=""
     
 def detect_lose():
@@ -169,7 +205,7 @@ def movement_up():
                         numbers[i][j]=None
                         place_square=True
     if move==True: canvas.after(1, movement_up)
-    else: bind(), detect_lose()
+    else: bind(True), detect_lose()
 
 def movement_down():
     global square, numbers, matrice, place_square, mix
@@ -224,7 +260,7 @@ def movement_down():
                         numbers[i][j]=None
                         place_square=True
     if move==True: canvas.after(1, movement_down)
-    else: bind(), detect_lose()
+    else: bind(True), detect_lose()
                 
 def movement_right():
     global square, numbers, matrice, place_square, mix
@@ -279,7 +315,7 @@ def movement_right():
                         numbers[i][j]=None
                         place_square=True
     if move==True: canvas.after(1, movement_right)
-    else: bind(), detect_lose()
+    else: bind(True), detect_lose()
                 
 def movement_left():
     global square, numbers, matrice, place_square, mix
@@ -334,7 +370,7 @@ def movement_left():
                         numbers[i][j]=None
                         place_square=True
     if move==True: canvas.after(1, movement_left)
-    else: bind(), detect_lose()
+    else: bind(True), detect_lose()
                 
 def movement(direction):
     unbind()
@@ -347,22 +383,15 @@ def unbind():
     global root
     root.unbind("<Up>"), root.unbind("<Down>"), root.unbind("<Right>"), root.unbind("<Left>")
 
-def bind():
+def bind(new_game):
     global root, mix
     mix=[False, False, False, False]
     root.bind("<Up>", lambda e: movement("up"))
     root.bind("<Down>", lambda e: movement("down"))
     root.bind("<Right>", lambda e: movement("right"))
     root.bind("<Left>", lambda e: movement("left"))
-    matrice_game()
-
-
-def grille_en_4():
-    LARGEUR = 600
-    HAUTEUR = 400
-    mur_G = canvas.create_line(1,0,1,HAUTEUR,fill='white')
-    mur_D = canvas.create_line(150,0,150,HAUTEUR,fill='white')
-    pass
+    if new_game==True:
+        matrice_game()
 
 # Création des widgets
 root = tk.Tk()
@@ -387,28 +416,30 @@ canvas.create_rectangle(204, 302, 294, 392, fill="#E0e0e0", outline="#E0e0e0")
 canvas.create_rectangle(302, 302, 392, 392, fill="#E0e0e0", outline="#E0e0e0")
 
 canvas.create_rectangle(8, 400, 98, 436, fill="#B5b5b5", outline="#B5b5b5")
-canvas.create_rectangle(106, 400, 196, 436, fill="#B5b5b5", outline="#B5b5b5")
+rectangle_save=canvas.create_rectangle(106, 400, 196, 436, fill="#E0e0e0", outline="#E0e0e0")
 canvas.create_rectangle(204, 400, 294, 436, fill="#B5b5b5", outline="#B5b5b5")
 rectangle_exit=canvas.create_rectangle(302, 400, 392, 436, fill="#E0e0e0", outline="#E0e0e0")
 button_load=canvas.create_text((53, 418), text="Load", font=("helvetica", "18"), fill="black")
-button_save=canvas.create_text((151, 418), text="Save", font=("helvetica", "18"), fill="black")
+button_save=canvas.create_text((151, 418), text="Save", font=("helvetica", "18"), fill="#C6c5c5")
 button_play=canvas.create_text((249, 418), text="Play", font=("helvetica", "18"), fill="black")
 button_exit=canvas.create_text((347, 418), text="Exit", font=("helvetica", "18"), fill="#C6c5c5")
 canvas.grid()
-
-
 
 # Détection de la position de la souris inspiré de la source: https://codertw.com/程式語言/114662/
 
 def motion(event):
     global status
     x, y=event.x, event.y
-    if x>200 and x<300 and y>400 and y<436:
+    if x>0 and x<100 and y>400 and y<436:
+        root.bind('<Button-1>', load)
+    elif x>100 and x<200 and y>400 and y<436 and status=="play":
+        root.bind('<Button-1>', save)
+    elif x>200 and x<300 and y>400 and y<436:
         root.bind('<Button-1>', play)
     elif x>300 and x<400 and y>400 and y<436 and status=="play":
         root.bind('<Button-1>', exit)
     else: root.unbind('<Button-1>')
-    #print("Mouse position:", (event.x, event.y))
+    #print("Mouse position: (%s %s)" % (event.x, event.y))
 
 canvas.bind('<Motion>', motion)
 
