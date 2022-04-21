@@ -1,3 +1,4 @@
+
 import tkinter as tk
 import random
 from PIL import Image, ImageTk
@@ -24,6 +25,7 @@ game_over=[]
 
 place_square=True
 status=""
+
 mix=[False, False, False, False]
 
 color = {2 : "#b0e3f6", 4 : "#b1cae9", 8 : "#c0bbdc", 16 : "#cfb1d5", 32 : "#e1b0d0", 64 : "#f6accd", 128 : "#fac0b5", 256 : "#fdd6ab", 512 : "#fce8b3", 1024 : "#ebefb2", 2048 : "#d7e8b2", 4096 : "#d9e8b1", 8192 : "#cee7c7", 16384 : "#c7e6d7", 32768 : "#a7d8bb", 65536 : "#8dcca6", 131072 : "#52d085"}
