@@ -127,14 +127,14 @@ def play(event):
 
 def exit(event):
     global game_over, matrice, status
-    place_square, score = False, 0
+    square_placement, score1 = False, 0
     unbind()
     opacity_rectangle(101, 111, 499, 509, fill="black", alpha=0.7)
     game_over.append(canvas.create_text((300, 310), text="Game Over", font=("helvetica", "40"), fill="white"))
     for num in range(4):
         for j in range(4):
-            score += matrice[num][j]
-    game_over.append(canvas.create_text((300, 340), text=str(score), font=("helvetica", "15"), fill="white"))
+            score1 += matrice[num][j]
+    game_over.append(canvas.create_text((300, 340), text=str(score1), font=("helvetica", "15"), fill="white"))
     canvas.itemconfigure(button_exit, fill="#C6c5c5")
     canvas.itemconfigure(button_save, fill="#C6c5c5")
     status = ""
@@ -142,7 +142,7 @@ def exit(event):
 
 def detect_lose():
     global place_square, game_over, status
-    lose, score = True, 0
+    lose, score1 = True, 0
     for num in range(4):
         for j in range(4):
             if matrice[num][j] == 0:
@@ -158,8 +158,8 @@ def detect_lose():
         game_over.append(canvas.create_text((300, 310), text="Game Over", font=("helvetica", "40"), fill="white"))
         for num in range(4):
             for j in range(4):
-                score += matrice[num][j]
-        game_over.append(canvas.create_text((300, 340), text=str(score), font=("helvetica", "15"), fill="white"))
+                score1 += matrice[num][j]
+        game_over.append(canvas.create_text((300, 340), text=str(score1), font=("helvetica", "15"), fill="white"))
         canvas.itemconfigure(rectangle_exit, fill="#E0e0e0", outline="#E0e0e0")
         canvas.itemconfigure(button_exit, fill="#C6c5c5")
         canvas.itemconfigure(rectangle_save, fill="#E0e0e0", outline="#E0e0e0")
@@ -189,11 +189,11 @@ def matrice_game():
         "-----------")
 
 
-def create_square(x, y, i, j):
+def create_square(x, y, number, j):
     global color
-    square = canvas.create_rectangle((x + 108, y + 118), (198 + x, 208 + y), fill=color[matrice[i][j]],
-                                     outline=color[matrice[i][j]])
-    return square
+    square1 = canvas.create_rectangle((x + 108, y + 118), (198 + x, 208 + y), fill=color[matrice[number][j]],
+                                      outline=color[matrice[number][j]])
+    return square1
 
 
 def create_number(x, y, ligne, colonne):
@@ -204,63 +204,71 @@ def create_number(x, y, ligne, colonne):
 
 
 def movement_up():
-    global square, numbers, matrice, place_square, color, mix
+    global square, numbers, matrice, place_square, color, mix, b
     move = False
-    for i in range(4):
+    for number in range(4):
         for j in range(4):
             d = 118
-            if i != 0 and square[i][j] is not None and square[i - 1][j] is None:
+            if number != 0 and square[number][j] is not None and square[number - 1][j] is None:
                 place_square = True
-            if square[i][j] is not None:
-                x0, y0, x1, y1 = canvas.coords(square[i][j])
-                if i > 0 and square[i - 1][j] is not None:
-                    a, b, c, d = canvas.coords(square[i - 1][j])
+            if square[number][j] is not None:
+                x0, y0, x1, y1 = canvas.coords(square[number][j])
+                if number > 0 and square[number - 1][j] is not None:
+                    a, b, c, d = canvas.coords(square[number - 1][j])
                     d += 8
                 if y0 > d:
                     move = True
-                    canvas.move(square[i][j], 0, -2)
-                    canvas.move(numbers[i][j], 0, -2)
+                    canvas.move(square[number][j], 0, -2)
+                    canvas.move(numbers[number][j], 0, -2)
                     y0 -= 2
-                    if y0 == 118: square[i][j], square[i - 1][j], numbers[i][j], numbers[i - 1][j], matrice[i][j], \
-                                  matrice[i - 1][j] = None, square[i][j], None, numbers[i][j], 0, matrice[i][j]
-                    if y0 == 216: square[i][j], square[i - 1][j], numbers[i][j], numbers[i - 1][j], matrice[i][j], \
-                                  matrice[i - 1][j] = None, square[i][j], None, numbers[i][j], 0, matrice[i][j]
-                    if y0 == 314: square[i][j], square[i - 1][j], numbers[i][j], numbers[i - 1][j], matrice[i][j], \
-                                  matrice[i - 1][j] = None, square[i][j], None, numbers[i][j], 0, matrice[i][j]
-                elif i > 0 and matrice[i][j] != 0 and matrice[i - 1][j] != 0 and matrice[i][j] == matrice[i - 1][
-                    j] and y0 > b and mix[j] == False:
-                    canvas.move(square[i][j], 0, -2)
-                    canvas.move(numbers[i][j], 0, -2)
+                    if y0 == 118: square[number][j], square[number - 1][j], numbers[number][j], numbers[number - 1][j], \
+                                  matrice[number][j], \
+                                  matrice[number - 1][j] = None, square[number][j], None, numbers[number][j], 0, \
+                                                           matrice[number][j]
+                    if y0 == 216: square[number][j], square[number - 1][j], numbers[number][j], numbers[number - 1][j], \
+                                  matrice[number][j], \
+                                  matrice[number - 1][j] = None, square[number][j], None, numbers[number][j], 0, \
+                                                           matrice[number][j]
+                    if y0 == 314: square[number][j], square[number - 1][j], numbers[number][j], numbers[number - 1][j], \
+                                  matrice[number][j], \
+                                  matrice[number - 1][j] = None, square[number][j], None, numbers[number][j], 0, \
+                                                           matrice[number][j]
+                elif number > 0 and matrice[number][j] != 0 and matrice[number - 1][j] != 0 and matrice[number][j] == \
+                        matrice[number - 1][
+                            j] and y0 > b and mix[j] == False:
+                    canvas.move(square[number][j], 0, -2)
+                    canvas.move(numbers[number][j], 0, -2)
                     move = True
                     if y0 - 2 == b:
                         mix[j] = True
                         if y0 - 2 == 118:
                             mix[j] = "remix"
-                        canvas.delete(square[i][j])
-                        matrice[i - 1][j] *= 2
-                        matrice[i][j] = 0
-                        canvas.itemconfigure(square[i - 1][j], fill=color[matrice[i - 1][j]],
-                                             outline=color[matrice[i - 1][j]])
-                        square[i][j] = None
-                        canvas.delete(numbers[i][j])
-                        canvas.itemconfigure(numbers[i - 1][j], text=str(matrice[i - 1][j]))
-                        numbers[i][j] = None
+                        canvas.delete(square[number][j])
+                        matrice[number - 1][j] *= 2
+                        matrice[number][j] = 0
+                        canvas.itemconfigure(square[number - 1][j], fill=color[matrice[number - 1][j]],
+                                             outline=color[matrice[number - 1][j]])
+                        square[number][j] = None
+                        canvas.delete(numbers[number][j])
+                        canvas.itemconfigure(numbers[number - 1][j], text=str(matrice[number - 1][j]))
+                        numbers[number][j] = None
                         place_square = True
-                elif i > 1 and matrice[i][j] != 0 and matrice[i - 1][j] != 0 and matrice[i][j] == matrice[i - 1][
-                    j] and y0 > b and mix[j] == "remix":
-                    canvas.move(square[i][j], 0, -2)
-                    canvas.move(numbers[i][j], 0, -2)
+                elif number > 1 and matrice[number][j] != 0 and matrice[number - 1][j] != 0 and matrice[number][j] == \
+                        matrice[number - 1][
+                            j] and y0 > b and mix[j] == "remix":
+                    canvas.move(square[number][j], 0, -2)
+                    canvas.move(numbers[number][j], 0, -2)
                     move = True
                     if y0 - 2 == b:
-                        canvas.delete(square[i][j])
-                        matrice[i - 1][j] *= 2
-                        matrice[i][j] = 0
-                        canvas.itemconfigure(square[i - 1][j], fill=color[matrice[i - 1][j]],
-                                             outline=color[matrice[i - 1][j]])
-                        square[i][j] = None
-                        canvas.delete(numbers[i][j])
-                        canvas.itemconfigure(numbers[i - 1][j], text=str(matrice[i - 1][j]))
-                        numbers[i][j] = None
+                        canvas.delete(square[number][j])
+                        matrice[number - 1][j] *= 2
+                        matrice[number][j] = 0
+                        canvas.itemconfigure(square[number - 1][j], fill=color[matrice[number - 1][j]],
+                                             outline=color[matrice[number - 1][j]])
+                        square[number][j] = None
+                        canvas.delete(numbers[number][j])
+                        canvas.itemconfigure(numbers[number - 1][j], text=str(matrice[number - 1][j]))
+                        numbers[number][j] = None
                         place_square = True
     if move:
         canvas.after(1, movement_up)
@@ -269,63 +277,71 @@ def movement_up():
 
 
 def movement_down():
-    global square, numbers, matrice, place_square, mix
+    global square, numbers, matrice, place_square, mix, d
     move = False
-    for i in range(3, -1, -1):
+    for number in range(3, -1, -1):
         for j in range(4):
             b = 502
-            if i != 3 and square[i][j] is not None and square[i + 1][j] is None:
+            if number != 3 and square[number][j] is not None and square[number + 1][j] is None:
                 place_square = True
-            if square[i][j] is not None:
-                x0, y0, x1, y1 = canvas.coords(square[i][j])
-                if i < 3 and square[i + 1][j] is not None:
-                    a, b, c, d = canvas.coords(square[i + 1][j])
+            if square[number][j] is not None:
+                x0, y0, x1, y1 = canvas.coords(square[number][j])
+                if number < 3 and square[number + 1][j] is not None:
+                    a, b, c, d = canvas.coords(square[number + 1][j])
                     b -= 8
                 if y1 < b:
                     move = True
-                    canvas.move(square[i][j], 0, 2)
-                    canvas.move(numbers[i][j], 0, 2)
+                    canvas.move(square[number][j], 0, 2)
+                    canvas.move(numbers[number][j], 0, 2)
                     y1 += 2
-                    if y1 == 502: square[i][j], square[i + 1][j], numbers[i][j], numbers[i + 1][j], matrice[i][j], \
-                                  matrice[i + 1][j] = None, square[i][j], None, numbers[i][j], 0, matrice[i][j]
-                    if y1 == 404: square[i][j], square[i + 1][j], numbers[i][j], numbers[i + 1][j], matrice[i][j], \
-                                  matrice[i + 1][j] = None, square[i][j], None, numbers[i][j], 0, matrice[i][j]
-                    if y1 == 306: square[i][j], square[i + 1][j], numbers[i][j], numbers[i + 1][j], matrice[i][j], \
-                                  matrice[i + 1][j] = None, square[i][j], None, numbers[i][j], 0, matrice[i][j]
-                elif i < 3 and matrice[i][j] != 0 and matrice[i + 1][j] != 0 and matrice[i][j] == matrice[i + 1][
-                    j] and y1 < d and mix[j] == False:
-                    canvas.move(square[i][j], 0, 2)
-                    canvas.move(numbers[i][j], 0, 2)
+                    if y1 == 502: square[number][j], square[number + 1][j], numbers[number][j], numbers[number + 1][j], \
+                                  matrice[number][j], \
+                                  matrice[number + 1][j] = None, square[number][j], None, numbers[number][j], 0, \
+                                                           matrice[number][j]
+                    if y1 == 404: square[number][j], square[number + 1][j], numbers[number][j], numbers[number + 1][j], \
+                                  matrice[number][j], \
+                                  matrice[number + 1][j] = None, square[number][j], None, numbers[number][j], 0, \
+                                                           matrice[number][j]
+                    if y1 == 306: square[number][j], square[number + 1][j], numbers[number][j], numbers[number + 1][j], \
+                                  matrice[number][j], \
+                                  matrice[number + 1][j] = None, square[number][j], None, numbers[number][j], 0, \
+                                                           matrice[number][j]
+                elif number < 3 and matrice[number][j] != 0 and matrice[number + 1][j] != 0 and matrice[number][j] == \
+                        matrice[number + 1][
+                            j] and y1 < d and mix[j] == False:
+                    canvas.move(square[number][j], 0, 2)
+                    canvas.move(numbers[number][j], 0, 2)
                     move = True
                     if y1 + 2 == d:
                         mix[j] = True
                         if y1 + 2 == 502:
                             mix[j] = "remix"
-                        canvas.delete(square[i][j])
-                        matrice[i + 1][j] *= 2
-                        matrice[i][j] = 0
-                        canvas.itemconfigure(square[i + 1][j], fill=color[matrice[i + 1][j]],
-                                             outline=color[matrice[i + 1][j]])
-                        square[i][j] = None
-                        canvas.delete(numbers[i][j])
-                        canvas.itemconfigure(numbers[i + 1][j], text=str(matrice[i + 1][j]))
-                        numbers[i][j] = None
+                        canvas.delete(square[number][j])
+                        matrice[number + 1][j] *= 2
+                        matrice[number][j] = 0
+                        canvas.itemconfigure(square[number + 1][j], fill=color[matrice[number + 1][j]],
+                                             outline=color[matrice[number + 1][j]])
+                        square[number][j] = None
+                        canvas.delete(numbers[number][j])
+                        canvas.itemconfigure(numbers[number + 1][j], text=str(matrice[number + 1][j]))
+                        numbers[number][j] = None
                         place_square = True
-                elif i < 2 and matrice[i][j] != 0 and matrice[i + 1][j] != 0 and matrice[i][j] == matrice[i + 1][
-                    j] and y1 < d and mix[j] == "remix":
-                    canvas.move(square[i][j], 0, 2)
-                    canvas.move(numbers[i][j], 0, 2)
+                elif number < 2 and matrice[number][j] != 0 and matrice[number + 1][j] != 0 and matrice[number][j] == \
+                        matrice[number + 1][
+                            j] and y1 < d and mix[j] == "remix":
+                    canvas.move(square[number][j], 0, 2)
+                    canvas.move(numbers[number][j], 0, 2)
                     move = True
                     if y1 + 2 == d:
-                        canvas.delete(square[i][j])
-                        matrice[i + 1][j] *= 2
-                        matrice[i][j] = 0
-                        canvas.itemconfigure(square[i + 1][j], fill=color[matrice[i + 1][j]],
-                                             outline=color[matrice[i + 1][j]])
-                        square[i][j] = None
-                        canvas.delete(numbers[i][j])
-                        canvas.itemconfigure(numbers[i + 1][j], text=str(matrice[i + 1][j]))
-                        numbers[i][j] = None
+                        canvas.delete(square[number][j])
+                        matrice[number + 1][j] *= 2
+                        matrice[number][j] = 0
+                        canvas.itemconfigure(square[number + 1][j], fill=color[matrice[number + 1][j]],
+                                             outline=color[matrice[number + 1][j]])
+                        square[number][j] = None
+                        canvas.delete(numbers[number][j])
+                        canvas.itemconfigure(numbers[number + 1][j], text=str(matrice[number + 1][j]))
+                        numbers[number][j] = None
                         place_square = True
     if move:
         canvas.after(1, movement_down)
@@ -334,63 +350,63 @@ def movement_down():
 
 
 def movement_right():
-    global square, numbers, matrice, place_square, mix
+    global square, numbers, matrice, place_square, mix, c
     move = False
-    for i in range(4):
+    for number1 in range(4):
         for j in range(3, -1, -1):
             a = 492
-            if j != 3 and square[i][j] is not None and square[i][j + 1] is None:
+            if j != 3 and square[number1][j] is not None and square[number1][j + 1] is None:
                 place_square = True
-            if square[i][j] is not None:
-                x0, y0, x1, y1 = canvas.coords(square[i][j])
-                if j < 3 and square[i][j + 1] is not None:
-                    a, b, c, d = canvas.coords(square[i][j + 1])
+            if square[number1][j] is not None:
+                x0, y0, x1, y1 = canvas.coords(square[number1][j])
+                if j < 3 and square[number1][j + 1] is not None:
+                    a, b, c, d = canvas.coords(square[number1][j + 1])
                     a -= 8
                 if x1 < a:
                     move = True
-                    canvas.move(square[i][j], 2, 0)
-                    canvas.move(numbers[i][j], 2, 0)
+                    canvas.move(square[number1][j], 2, 0)
+                    canvas.move(numbers[number1][j], 2, 0)
                     x1 += 2
-                    if x1 == 492: square[i][j], square[i][j + 1], numbers[i][j], numbers[i][j + 1], matrice[i][j], \
-                                  matrice[i][j + 1] = None, square[i][j], None, numbers[i][j], 0, matrice[i][j]
-                    if x1 == 394: square[i][j], square[i][j + 1], numbers[i][j], numbers[i][j + 1], matrice[i][j], \
-                                  matrice[i][j + 1] = None, square[i][j], None, numbers[i][j], 0, matrice[i][j]
-                    if x1 == 296: square[i][j], square[i][j + 1], numbers[i][j], numbers[i][j + 1], matrice[i][j], \
-                                  matrice[i][j + 1] = None, square[i][j], None, numbers[i][j], 0, matrice[i][j]
-                elif j < 3 and matrice[i][j] != 0 and matrice[i][j + 1] != 0 and matrice[i][j] == matrice[i][
-                    j + 1] and x1 < c and mix[i] == False:
-                    canvas.move(square[i][j], 2, 0)
-                    canvas.move(numbers[i][j], 2, 0)
+                    if x1 == 492: square[number1][j], square[number1][j + 1], numbers[number1][j], numbers[number1][j + 1], matrice[number1][j], \
+                                  matrice[number1][j + 1] = None, square[number1][j], None, numbers[number1][j], 0, matrice[number1][j]
+                    if x1 == 394: square[number1][j], square[number1][j + 1], numbers[number1][j], numbers[number1][j + 1], matrice[number1][j], \
+                                  matrice[number1][j + 1] = None, square[number1][j], None, numbers[number1][j], 0, matrice[number1][j]
+                    if x1 == 296: square[number1][j], square[number1][j + 1], numbers[number1][j], numbers[number1][j + 1], matrice[number1][j], \
+                                  matrice[number1][j + 1] = None, square[number1][j], None, numbers[number1][j], 0, matrice[number1][j]
+                elif j < 3 and matrice[number1][j] != 0 and matrice[number1][j + 1] != 0 and matrice[number1][j] == matrice[number1][
+                    j + 1] and x1 < c and mix[number1] == False:
+                    canvas.move(square[number1][j], 2, 0)
+                    canvas.move(numbers[number1][j], 2, 0)
                     move = True
                     if x1 + 2 == c:
-                        mix[i] = True
+                        mix[number1] = True
                         if x1 + 2 == 492:
-                            mix[i] = "remix"
-                        canvas.delete(square[i][j])
-                        matrice[i][j + 1] *= 2
-                        matrice[i][j] = 0
-                        canvas.itemconfigure(square[i][j + 1], fill=color[matrice[i][j + 1]],
-                                             outline=color[matrice[i][j + 1]])
-                        square[i][j] = None
-                        canvas.delete(numbers[i][j])
-                        canvas.itemconfigure(numbers[i][j + 1], text=str(matrice[i][j + 1]))
-                        numbers[i][j] = None
+                            mix[number1] = "remix"
+                        canvas.delete(square[number1][j])
+                        matrice[number1][j + 1] *= 2
+                        matrice[number1][j] = 0
+                        canvas.itemconfigure(square[number1][j + 1], fill=color[matrice[number1][j + 1]],
+                                             outline=color[matrice[number1][j + 1]])
+                        square[number1][j] = None
+                        canvas.delete(numbers[number1][j])
+                        canvas.itemconfigure(numbers[number1][j + 1], text=str(matrice[number1][j + 1]))
+                        numbers[number1][j] = None
                         place_square = True
-                elif j < 2 and matrice[i][j] != 0 and matrice[i][j + 1] != 0 and matrice[i][j] == matrice[i][
-                    j + 1] and x1 < c and mix[i] == "remix":
-                    canvas.move(square[i][j], 2, 0)
-                    canvas.move(numbers[i][j], 2, 0)
+                elif j < 2 and matrice[number1][j] != 0 and matrice[number1][j + 1] != 0 and matrice[number1][j] == matrice[number1][
+                    j + 1] and x1 < c and mix[number1] == "remix":
+                    canvas.move(square[number1][j], 2, 0)
+                    canvas.move(numbers[number1][j], 2, 0)
                     move = True
                     if x1 + 2 == c:
-                        canvas.delete(square[i][j])
-                        matrice[i][j + 1] *= 2
-                        matrice[i][j] = 0
-                        canvas.itemconfigure(square[i][j + 1], fill=color[matrice[i][j + 1]],
-                                             outline=color[matrice[i][j + 1]])
-                        square[i][j] = None
-                        canvas.delete(numbers[i][j])
-                        canvas.itemconfigure(numbers[i][j + 1], text=str(matrice[i][j + 1]))
-                        numbers[i][j] = None
+                        canvas.delete(square[number1][j])
+                        matrice[number1][j + 1] *= 2
+                        matrice[number1][j] = 0
+                        canvas.itemconfigure(square[number1][j + 1], fill=color[matrice[number1][j + 1]],
+                                             outline=color[matrice[number1][j + 1]])
+                        square[number1][j] = None
+                        canvas.delete(numbers[number1][j])
+                        canvas.itemconfigure(numbers[number1][j + 1], text=str(matrice[number1][j + 1]))
+                        numbers[number1][j] = None
                         place_square = True
     if move:
         canvas.after(1, movement_right)
@@ -399,7 +415,7 @@ def movement_right():
 
 
 def movement_left():
-    global square, numbers, matrice, place_square, mix
+    global square, numbers, matrice, place_square, mix, a
     move = False
     for num in range(4):
         for j in range(4):
@@ -416,11 +432,14 @@ def movement_left():
                     canvas.move(square[num][j], -2, 0)
                     canvas.move(numbers[num][j], -2, 0)
                     x0 -= 2
-                    if x0 == 108: square[num][j], square[num][j - 1], numbers[num][j], numbers[num][j - 1], matrice[num][j], \
+                    if x0 == 108: square[num][j], square[num][j - 1], numbers[num][j], numbers[num][j - 1], \
+                                  matrice[num][j], \
                                   matrice[num][j - 1] = None, square[num][j], None, numbers[num][j], 0, matrice[num][j]
-                    if x0 == 206: square[num][j], square[num][j - 1], numbers[num][j], numbers[num][j - 1], matrice[num][j], \
+                    if x0 == 206: square[num][j], square[num][j - 1], numbers[num][j], numbers[num][j - 1], \
+                                  matrice[num][j], \
                                   matrice[num][j - 1] = None, square[num][j], None, numbers[num][j], 0, matrice[num][j]
-                    if x0 == 304: square[num][j], square[num][j - 1], numbers[num][j], numbers[num][j - 1], matrice[num][j], \
+                    if x0 == 304: square[num][j], square[num][j - 1], numbers[num][j], numbers[num][j - 1], \
+                                  matrice[num][j], \
                                   matrice[num][j - 1] = None, square[num][j], None, numbers[num][j], 0, matrice[num][j]
                 elif j > 0 and matrice[num][j] != 0 and matrice[num][j - 1] != 0 and matrice[num][j] == matrice[num][
                     j - 1] and x1 > a and mix[num] == False:
@@ -478,7 +497,7 @@ def unbind():
 
 def bind(new_game):
     global root, mix, text_score, highscore
-    score = 0
+    score1 = 0
     mix = [False, False, False, False]
     root.bind("w", lambda e: movement("up"))
     root.bind("s", lambda e: movement("down"))
@@ -488,11 +507,11 @@ def bind(new_game):
         matrice_game()
     for num in range(4):
         for j in range(4):
-            score += matrice[num][j]
-    if score > highscore:
-        highscore = score
+            score1 += matrice[num][j]
+    if score1 > highscore:
+        highscore = score1
         save_highscore()
-    canvas.itemconfigure(text_score, text=str(score))
+    canvas.itemconfigure(text_score, text=str(score1))
     canvas.itemconfigure(text_highscore, text=str(highscore))
 
 
@@ -528,15 +547,15 @@ button_save = canvas.create_text((251, 533), text="Save", font=("helvetica", "18
 button_play = canvas.create_text((349, 533), text="Play", font=("helvetica", "18"), fill="#FFFFFF")
 button_exit = canvas.create_text((447, 533), text="Exit", font=("helvetica", "18"), fill="#FFFFFF")
 
-canvas.create_rectangle(304, 56, 394, 96, fill="#E0e0e0", outline="#E0e0e0")
-canvas.create_text((349, 68), text="SCORE", font=("helvetica", "10"), fill="#565555")
-text_score = canvas.create_text((349, 83), text="0", font=("helvetica", "13"), fill="#565555")
+canvas.create_rectangle(304, 56, 394, 96, fill="#B9B6AB", outline="#E0e0e0")
+canvas.create_text((349, 68), text="SCORE", font=("Arial Bold", "10"), fill="#E8E6DF")
+text_score = canvas.create_text((349, 83), text="0", font=("Helvetica", "13"), fill="#FFFFFF")
 
-canvas.create_rectangle(402, 56, 492, 96, fill="#E0e0e0", outline="#E0e0e0")
-canvas.create_text((449, 68), text="HIGHSCORE", font=("helvetica", "10"), fill="#565555")
-text_highscore = canvas.create_text((449, 83), text=str(highscore), font=("helvetica", "13"), fill="#565555")
+canvas.create_rectangle(402, 56, 492, 96, fill="#B9B6AB", outline="#E0e0e0")
+canvas.create_text((449, 68), text="HIGHSCORE", font=("Arial Bold", "10"), fill="#E8E6DF")
+text_highscore = canvas.create_text((449, 83), text=str(highscore), font=("Helvetica", "13"), fill="#FFFFFF")
 
-canvas.create_text((204, 76), text="2048", font=("helvetica", "50", "bold"), fill="black")
+canvas.create_text((204, 76), text="2048", font=("Arial", "50", "bold"), fill="black")
 
 canvas.grid()
 load(1)
@@ -547,13 +566,13 @@ load(1)
 def motion(event):
     global status
     x, y = event.x, event.y
-    if x > 100 and x < 200 and y > 515 and y < 551:
+    if 100 < x < 200 and 515 < y < 551:
         root.bind('<Button-1>', load)
-    elif x > 200 and x < 300 and y > 515 and y < 551 and status == "play":
+    elif 200 < x < 300 and 515 < y < 551 and status == "play":
         root.bind('<Button-1>', save)
-    elif x > 300 and x < 400 and y > 515 and y < 551:
+    elif 300 < x < 400 and 515 < y < 551:
         root.bind('<Button-1>', play)
-    elif x > 400 and x < 500 and y > 515 and y < 551 and status == "play":
+    elif 400 < x < 500 and 515 < y < 551 and status == "play":
         root.bind('<Button-1>', exit)
     else:
         root.unbind('<Button-1>')
