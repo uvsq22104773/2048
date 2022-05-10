@@ -492,17 +492,17 @@ def movement(direction):
 
 def unbind():
     global root
-    root.unbind("w"), root.unbind("s"), root.unbind("d"), root.unbind("a")
+    root.unbind("z"), root.unbind("s"), root.unbind("d"), root.unbind("q")
 
 
 def bind(new_game):
     global root, mix, text_score, highscore
     score1 = 0
     mix = [False, False, False, False]
-    root.bind("w", lambda e: movement("up"))
+    root.bind("z", lambda e: movement("up"))
     root.bind("s", lambda e: movement("down"))
     root.bind("d", lambda e: movement("right"))
-    root.bind("a", lambda e: movement("left"))
+    root.bind("q", lambda e: movement("left"))
     if new_game:
         matrice_game()
     for num in range(4):
