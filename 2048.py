@@ -473,27 +473,21 @@ def movement(direction):
 
 def unbind():
     global root
-<<<<<<< HEAD
     root.unbind("z"), root.unbind("s"), root.unbind("d"), root.unbind("q")
-=======
     root.unbind("<Up>"), root.unbind("<Down>"), root.unbind("<Right>"), root.unbind("<Left>")
->>>>>>> 0e9d6079bf621e2a09d138147cce3c30c621df8c
 
 
 def bind(new_game):
     global root, mix, text_score, highscore
     mix = [False, False, False, False]
-<<<<<<< HEAD
     root.bind("z", lambda e: movement("up"))
     root.bind("s", lambda e: movement("down"))
     root.bind("d", lambda e: movement("right"))
     root.bind("q", lambda e: movement("left"))
-=======
     root.bind("<Up>", lambda e: movement("up"))
     root.bind("<Down>", lambda e: movement("down"))
     root.bind("<Right>", lambda e: movement("right"))
     root.bind("<Left>", lambda e: movement("left"))
->>>>>>> 0e9d6079bf621e2a09d138147cce3c30c621df8c
     if new_game:
         matrice_game()
     score1 = sum(matrice[num][j] for num, j in itertools.product(range(4), range(4)))
