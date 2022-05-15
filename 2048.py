@@ -39,6 +39,7 @@ color = {2: "#F6B698", 4: "#F0A07A", 8: "#F38D5D", 16: "#EB7C48", 32: "#EA7138",
 # Functions
 
 def save_highscore():
+    # enregistre le meilleur score dans un fichier save.txt
     global highscore
     save_matrice = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
     file = open("save.txt", "r")
@@ -56,6 +57,7 @@ def save_highscore():
 
 
 def save(event):
+    # ouvre le fichier save.txt puis écris de dans la matrice du jeux
     global highscore
     file = open("save.txt", "w")
     file.write(str(highscore) + "\n")
@@ -66,6 +68,7 @@ def save(event):
 
 
 def load(event):
+    # charger le fichier save.txt et redémare la fonction rematche (netoie la grille de la partie en cour)
     global matrice, highscore, i, status
     rematch()
     file = open("save.txt", "r")
@@ -96,6 +99,7 @@ def load(event):
 
 
 def rematch():
+    # suprimme tout les canvas present
     global place_square, matrice, square, numbers, game_over, status
     for num, j in itertools.product(range(4), range(4)):
         if square[num][j] is not None:
@@ -109,6 +113,7 @@ def rematch():
 
 
 def play(event):
+    # demare le jeux en nettoyant la grille et fait apparaitre 2 carré
     global place_square, matrice, square, numbers, game_over, status
     rematch()
     place_square = True
@@ -121,6 +126,7 @@ def play(event):
 
 
 def exit(event):
+    # crée en canvas transparent qui marque que la partie est terminer
     global game_over, matrice, status
     square_placement, score1 = False, 0
     unbind()
@@ -137,6 +143,7 @@ def exit(event):
 
 
 def detect_lose():
+    # verifie quand la grille est pleinne si oui elle verifie si 2 chiffre identique sont placer cote a cote sinon game over
     global place_square, game_over, status
     lose, score1 = True, 0
     for num, j in itertools.product(range(4), range(4)):
@@ -152,6 +159,7 @@ def detect_lose():
 
 # TODO Rename this here and in `detect_lose`
 def _extracted_from_detect_lose_12(score1):
+    # declanche le canvas transparent et le score
     place_square = False
     unbind()
     opacity_rectangle(101, 111, 499, 509, fill="black", alpha=0.7)
@@ -169,6 +177,7 @@ def _extracted_from_detect_lose_12(score1):
 
 
 def matrice_game():
+    # la fonction tire au sort un chiffre entre 0 et 3 pour la ligne et la collone, indique si la case est pleinne ou pas si elle l'est elle retire au sort 
     global square, numbers, place_square, matrice
     if place_square:
         ligne, colonne = random.randint(0, 3), random.randint(0, 3)
@@ -189,16 +198,21 @@ def matrice_game():
 
 
 def create_square(x, y, number, j):
+    # crée un carré en fonction des coordoner de la grille de matrice_game et le place au bonne endroi
     global color
     return canvas.create_rectangle((x + 108, y + 118), (198 + x, 208 + y), fill=color[matrice[number][j]], outline=color[matrice[number][j]])
 
 
 def create_number(x, y, ligne, colonne):
+    # crée le nombre sur le carré crée juste avant 
     global matrice
     return canvas.create_text((x + 152, y + 162), text=matrice[ligne][colonne], font=("helvetica", "30"), fill="black")
 
 
 def movement_up():
+    # quand la touche du haut est actionner il déclanche la fonction et récuppère les coordoner de y0 (haut du carré) et lui enlève 1 jusqu'a ce qu'il rencontre un obstacle
+    # elle détecte un obstacle ou pas (valeur d'un autre carré ou pas) et elle s'arrete au coordoners de lautre carré
+    # si les 2 carré on la même valeurs alors ils ce superpose, l'un des 2 ce suprime et l'autre modifie ça valeure
     global square, numbers, matrice, place_square, color, mix, b
     move = False
     for number, j in itertools.product(range(4), range(4)):
@@ -266,6 +280,9 @@ def movement_up():
 
 
 def movement_down():
+    # quand la touche du haut est actionner il déclanche la fonction et récuppère les coordoner de y1 (bas du carré) et lui ajoute 1 jusqu'a ce qu'il rencontre un obstacle
+    # elle détecte un obstacle ou pas (valeur d'un autre carré ou pas) et elle s'arrete au coordoners de lautre carré
+    # si les 2 carré on la même valeurs alors ils ce superpose, l'un des 2 ce suprime et l'autre modifie ça valeure
     global square, numbers, matrice, place_square, mix, d
     move = False
     for number, j in itertools.product(range(3, -1, -1), range(4)):
@@ -333,6 +350,9 @@ def movement_down():
 
 
 def movement_right():
+    # quand la touche du haut est actionner il déclanche la fonction et récuppère les coordoner de x1 (le coter droit du carré) et lui ajoute 1 jusqu'a ce qu'il rencontre un obstacle
+    # elle détecte un obstacle ou pas (valeur d'un autre carré ou pas) et elle s'arrete au coordoners de lautre carré
+    # si les 2 carré on la même valeurs alors ils ce superpose, l'un des 2 ce suprime et l'autre modifie ça valeure
     global square, numbers, matrice, place_square, mix, c
     move = False
     for number1, j in itertools.product(range(4), range(3, -1, -1)):
@@ -396,6 +416,9 @@ def movement_right():
 
 
 def movement_left():
+    # quand la touche du haut est actionner il déclanche la fonction et récuppère les coordoner de x0 (le coter gauche du carré) et lui retire 1 jusqu'a ce qu'il rencontre un obstacle
+    # elle détecte un obstacle ou pas (valeur d'un autre carré ou pas) et elle s'arrete au coordoners de lautre carré
+    # si les 2 carré on la même valeurs alors ils ce superpose, l'un des 2 ce suprime et l'autre modifie ça valeure
     global square, numbers, matrice, place_square, mix, a
     move = False
     for num, j in itertools.product(range(4), range(4)):
@@ -460,6 +483,7 @@ def movement_left():
 
 
 def movement(direction):
+    # désactive les boutton pedant qu'un carré bouge et déclanche un mouvement
     unbind()
     if direction == "up":
         movement_up()
@@ -472,12 +496,14 @@ def movement(direction):
 
 
 def unbind():
+    # désactive les bouttons asigner
     global root
     root.unbind("z"), root.unbind("s"), root.unbind("d"), root.unbind("q")
     root.unbind("<Up>"), root.unbind("<Down>"), root.unbind("<Right>"), root.unbind("<Left>")
 
 
 def bind(new_game):
+    # active les touches et marque le score en haut de canvas et si le score est plus haut que le higth score alors il le ramplace
     global root, mix, text_score, highscore
     mix = [False, False, False, False]
     root.bind("z", lambda e: movement("up"))
@@ -504,7 +530,7 @@ def bind(new_game):
 root = tk.Tk()
 root.title("2048 Game")
 canvas = tk.Canvas(root, width=598, height=621, bg="#ececec")
-
+# canvas d'esthétique
 canvas.create_rectangle(108, 118, 198, 208, fill="#DEC164", outline="#818589")
 canvas.create_rectangle(206, 118, 296, 208, fill="#DEC164", outline="#818589")
 canvas.create_rectangle(304, 118, 394, 208, fill="#DEC164", outline="#818589")
@@ -522,6 +548,8 @@ canvas.create_rectangle(206, 412, 296, 502, fill="#DEC164", outline="#818589")
 canvas.create_rectangle(304, 412, 394, 502, fill="#DEC164", outline="#818589")
 canvas.create_rectangle(402, 412, 492, 502, fill="#DEC164", outline="#818589")
 
+
+# deffinition des widgets crée sur le canvas 
 load_rectangle = canvas.create_rectangle(
     108, 515, 198, 551, fill="#B9B6AB", outline="#E0e0e0")
 rectangle_save = canvas.create_rectangle(
@@ -561,6 +589,7 @@ load(1)
 # Détection de la position de la souris inspiré de la source: https://codertw.com/程式語言/114662/
 
 def motion(event):
+    # détecte la position de la sourie et détecte si elle est sur un boutton ou pas pour activation désactivation
     global status
     x, y = event.x, event.y
     if 100 < x < 200 and 515 < y < 551:
@@ -581,6 +610,7 @@ canvas.bind('<Motion>', motion)
 
 # Sert uniquement pour l'esthétique, source: https://www.tutorialspoint.com/how-to-make-a-tkinter-canvas-rectangle-transparent
 def opacity_rectangle(x, y, a, b, **options):
+    # sert a crée un widgets transparent
     global game_over
     if 'alpha' in options:
         alpha = int(options.pop('alpha') * 255)
