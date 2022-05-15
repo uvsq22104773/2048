@@ -57,7 +57,7 @@ def save_highscore():
 
 
 def save(event):
-    # ouvre le fichier save.txt puis écris de dans la matrice du jeux
+    # ouvre le fichier save.txt puis écris le score de la matrice du jeux
     global highscore
     file = open("save.txt", "w")
     file.write(str(highscore) + "\n")
