@@ -68,7 +68,7 @@ def save(event):
 
 
 def load(event):
-    # charger le fichier save.txt et redémare la fonction rematche (netoie la grille de la partie en cour)
+    # charge le fichier save.txt et redémare la fonction rematche (netoie la grille de la partie en cour)
     global matrice, highscore, i, status
     rematch()
     file = open("save.txt", "r")
