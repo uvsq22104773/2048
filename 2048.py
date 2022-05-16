@@ -32,8 +32,11 @@ mix = [False, False, False, False]
 score = 0
 highscore = 0
 i = "y"
-color = {2: "#F6B698", 4: "#F0A07A", 8: "#F38D5D", 16: "#EB7C48", 32: "#EA7138", 64: "#EF7B0E", 128: "#F9A150",
-         256: "#D6B554", 512: "#DDE84C", 1024: "#D4A61D", 2048: "F86925"}
+color = {2 : "#b0e3f6", 4 : "#b1cae9", 8 : "#c0bbdc", 16 : "#cfb1d5", 
+    32 : "#e1b0d0", 64 : "#f6accd", 128 : "#fac0b5", 256 : "#fdd6ab", 
+    512 : "#fce8b3", 1024 : "#ebefb2", 2048 : "#d7e8b2", 4096 : "#d9e8b1", 
+    8192 : "#cee7c7", 16384 : "#c7e6d7", 32768 : "#a7d8bb", 65536 : "#8dcca6", 
+    131072 : "#52d085"}
 
 
 # Functions
@@ -531,53 +534,53 @@ root = tk.Tk()
 root.title("2048 Game")
 canvas = tk.Canvas(root, width=598, height=621, bg="#ececec")
 # canvas d'esthétique
-canvas.create_rectangle(108, 118, 198, 208, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(206, 118, 296, 208, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(304, 118, 394, 208, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(402, 118, 492, 208, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(108, 216, 198, 306, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(206, 216, 296, 306, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(304, 216, 394, 306, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(402, 216, 492, 306, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(108, 314, 198, 404, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(206, 314, 296, 404, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(304, 314, 394, 404, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(402, 314, 492, 404, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(108, 412, 198, 502, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(206, 412, 296, 502, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(304, 412, 394, 502, fill="#DEC164", outline="#818589")
-canvas.create_rectangle(402, 412, 492, 502, fill="#DEC164", outline="#818589")
+canvas.create_rectangle(108, 118, 198, 208, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(206, 118, 296, 208, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(304, 118, 394, 208, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(402, 118, 492, 208, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(108, 216, 198, 306, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(206, 216, 296, 306, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(304, 216, 394, 306, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(402, 216, 492, 306, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(108, 314, 198, 404, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(206, 314, 296, 404, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(304, 314, 394, 404, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(402, 314, 492, 404, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(108, 412, 198, 502, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(206, 412, 296, 502, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(304, 412, 394, 502, fill="#E0e0e0", outline="#E0e0e0")
+canvas.create_rectangle(402, 412, 492, 502, fill="#E0e0e0", outline="#E0e0e0")
 
 
 # definition des widgets crées sur le canvas 
 load_rectangle = canvas.create_rectangle(
-    108, 515, 198, 551, fill="#B9B6AB", outline="#E0e0e0")
+    108, 515, 198, 551, fill="#E0e0e0", outline="#E0e0e0")
 rectangle_save = canvas.create_rectangle(
-    206, 515, 296, 551, fill="#B9B6AB", outline="#E0e0e0")
+    206, 515, 296, 551, fill="#E0e0e0", outline="#E0e0e0")
 play_rectangle = canvas.create_rectangle(
-    304, 515, 394, 551, fill="#B9B6AB", outline="#E0e0e0")
+    304, 515, 394, 551, fill="#E0e0e0", outline="#E0e0e0")
 rectangle_exit = canvas.create_rectangle(
-    402, 515, 492, 551, fill="#B9B6AB", outline="#E0e0e0")
+    402, 515, 492, 551, fill="#E0e0e0", outline="#E0e0e0")
 button_load = canvas.create_text(
-    (153, 533), text="Load", font=("helvetica", "18"), fill="#FFFFFF")
+    (153, 533), text="Load", font=("helvetica", "18"), fill="#565555")
 button_save = canvas.create_text(
-    (251, 533), text="Save", font=("helvetica", "18"), fill="#FFFFFF")
+    (251, 533), text="Save", font=("helvetica", "18"), fill="#C6c5c5")
 button_play = canvas.create_text(
-    (349, 533), text="Play", font=("helvetica", "18"), fill="#FFFFFF")
+    (349, 533), text="Play", font=("helvetica", "18"), fill="#565555")
 button_exit = canvas.create_text(
-    (447, 533), text="Exit", font=("helvetica", "18"), fill="#FFFFFF")
+    (447, 533), text="Exit", font=("helvetica", "18"), fill="#C6c5c5")
 
-canvas.create_rectangle(304, 56, 394, 96, fill="#B9B6AB", outline="#E0e0e0")
+canvas.create_rectangle(304, 56, 394, 96, fill="#E0e0e0", outline="#E0e0e0")
 canvas.create_text((349, 68), text="SCORE", font=(
-    "Arial Bold", "10"), fill="#E8E6DF")
+    "Arial Bold", "10"), fill="#565555")
 text_score = canvas.create_text(
-    (349, 83), text="0", font=("Helvetica", "13"), fill="#FFFFFF")
+    (349, 83), text="0", font=("Helvetica", "13"), fill="#565555")
 
-canvas.create_rectangle(402, 56, 492, 96, fill="#B9B6AB", outline="#E0e0e0")
+canvas.create_rectangle(402, 56, 492, 96, fill="#E0e0e0", outline="#E0e0e0")
 canvas.create_text((449, 68), text="HIGHSCORE",
-                   font=("Arial Bold", "10"), fill="#E8E6DF")
+                   font=("Arial Bold", "10"), fill="#565555")
 text_highscore = canvas.create_text((449, 83), text=str(
-    highscore), font=("Helvetica", "13"), fill="#FFFFFF")
+    highscore), font=("Helvetica", "13"), fill="#565555")
 
 canvas.create_text((204, 76), text="2048", font=(
     "Arial", "50", "bold"), fill="black")
