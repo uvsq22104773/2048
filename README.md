@@ -1,9 +1,6 @@
 # 2048
 
-Project Details:
-
-
-Names:
+Noms:
 
 - MATVEEV Erik
 - DJEBROUNI Ouail
