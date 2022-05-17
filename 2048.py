@@ -195,9 +195,6 @@ def matrice_game():
             numbers[ligne][colonne] = create_number(
                 colonne * 98, ligne * 98, ligne, colonne)
         place_square = False
-    print(matrice[0], "|", square[0], "|", numbers[0]), print(matrice[1], "|", square[1], "|", numbers[1]), print(
-        matrice[2], "|", square[2], "|", numbers[2]), print(matrice[3], "|", square[3], "|", numbers[3]), print(
-        "-----------")
 
 
 def create_square(x, y, number, j):
