@@ -18,3 +18,7 @@ Au lencement de la partie, 2 tuiles apparaissent (tuiles 2 ou 4). Le but est de 
 Exemples: deux tuiles de 2 pour former un 4, deux tuiles de 4 pour former un 8 ou encore deux tuiles de 256 pour former un 512.
 
 À la fin de la partie, le score est la somme de toutes les tuiles sur le terrain. Si il y a 2 tuiles, une 4 et une 2, votre score sera de 6.
+
+# Version
+
+Le programme fonctionne sous python, écrit sous version 3.9.7. Il fonctionne sur macOS, Windows et Linux.
